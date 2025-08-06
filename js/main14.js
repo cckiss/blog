@@ -4178,13 +4178,80 @@ class TopCard {
 
 
 
+class SectionContent {
+	constructor(options) {
+		const _ = this;
+		if (!options) return;
+		_.option = $.extend({
+			wrap: null,
+			breakpoint: BREAKPOINTS,
+			global: window,
+			data : null
+			}, options);
+		_.global = (_.option.global) ? _.option.global : window;
+	}
+
+	init(obj) {
+		const _ = this;
+		// console.log( '# sectionContent.js init() _.option : ', _.option);
+		if (isDefined(_.option.wrap) && _.option.wrap.length) _.setInstance();
+		return _;
+	}
+
+	setInstance() {
+		const _ = this;
+		// console.log( '# sectionContent.js : _.option.data : ', _.option.data);
+
+		function powerbook_tmpl_item (item) {
+			return `<div class="slick-item"><a href="${item.url}"><dl><dd class="thumb"><span class="flag 파워북">파워북</span><img src="${item.thumbnail}" class="thumb"></dd><dt><strong>파워북</strong></dt><dd class="desc">${item.desc}</dd></dl></a></div>`;
+		}
+
+		let tmpl = `<section class="section-content-type6 true">` +
+			`<header><h2>파워북</h2></header>` +
+			`<article id="lineageworld">${_.option.data.map( (item, index) => { return powerbook_tmpl_item(item); }).join('')}</article>` +
+		`</section>`;
+
+		_.option.wrap.empty().append(tmpl);
+		_.addEvent_slick6(slick6List);
+	}
+
+	addEvent_slick6 () {
+		$('#lineageworld').slick({
+			dots: true,
+			arrows: false,
+			infinite: false,
+			slidesToShow: 6,
+			slidesToScroll: 6,
+			responsive: [
+				{
+					breakpoint: 960,
+					settings: {
+						slidesToShow: 3,
+						slidesToScroll: 3
+					}
+				},
+				{
+					breakpoint: 480,
+					settings: {
+						slidesToShow: 2,
+						slidesToScroll: 2
+					}
+				}
+			]
+		});
+	}
+}
+
+
+
 $('body').addClass('page-main');
 (function ($, global) {
 	"use strict";
 
 	let promotionBanner = null,
 	serviceShortcut = null,
-	topCard = null;
+	topCard = null,
+	powerbook = null;
 
 	namespace('nc.lineage');
 
@@ -4215,6 +4282,9 @@ $('body').addClass('page-main');
 				case 'TOPCARD':
 					contiGroupData.topcard = element;
 					break;
+				case 'POWERBOOK':
+					contiGroupData.powerbook = element;
+					break;
 				default:
 					console.log('UNDEFINED_INDEX_DATA_KEY : ' + key);
 					break;
@@ -4244,14 +4314,20 @@ $('body').addClass('page-main');
 					breakpoint: BREAKPOINTS,
 					global: global,
 					data : contiGroupData.topcard
+				},
+				powerbook: {
+					wrap: null,
+					breakpoint: BREAKPOINTS,
+					global: global,
+					data : contiGroupData.powerbook
 				}
-
 			}, options);
 
 			// 담당 데이터 생성
 			promotionBanner = new PromotionBanner(option.promotionBanner).init();
 			serviceShortcut = new ServiceShortcut(option.serviceShortcut).init();
 			topCard = new TopCard(option.topCard).init();
+			powerbook = new SectionContent(option.powerbook).init();
 		}
 	};
 }(jQuery, window));
