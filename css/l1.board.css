@@ -22,4 +22,6 @@ table.table_list td.subject {text-align: left; word-break: break-all; word-wrap:
 .normalContent {padding: 15px 70px 0px 0px; color: #8a8a8a; line-height: 25px; white-space: pre-line; margin-bottom: 10px;}
 .arrowQ {float: right; background: url(https://cdn.jsdelivr.net/gh/cckiss/web/img/custom/arrowQoff.gif) right no-repeat; width: 10px; height: 10px; margin-right: 20px;}
 .arrowQ.selected {background: url(https://cdn.jsdelivr.net/gh/cckiss/web/img/custom/arrowQon.gif) right no-repeat;}
+
 .detailFaq {display: none;}
+.admin-icon {display: block; max-height: 18px;}
